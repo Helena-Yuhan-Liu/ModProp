@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
+
 snippet_cust_grad.py demonstrates how approximate activation derivative and 
 feedback weights can be defined using customized gradient in TensorFlow. 
 
-@author: anonymous
 """
 import tensorflor as tf
 
@@ -13,16 +13,16 @@ def actFunction(v_, mu):
     Replaces ReLU activation function with customized gradient, 
     where mu is used as the approximate activation derivative
     
-	Input: 
+    Input: 
         v_: n_batch x n_unit, pre-activation (voltage) 
         mu: scalar, smeared activation derivative
-	Output: 
+    Output: 
         z_: n_batch x n_unit, firing rate
     '''
     z_ = tf.nn.relu(v_)
 
     def grad(dy):
-        dv = dy * tf.ones_like(v_) * mu
+        dv = dy * mu
         return [dv, tf.zeros_like(mu)]
 
     return z_, grad
@@ -31,7 +31,7 @@ def actFunction(v_, mu):
 def custom_rec_Wab(activity, Wrec, Wab):
     '''
     Performs weighted summation of incoming activity with customized gradient, 
-    where Wab is used as the backpropagation weights instead of Wrec
+    where Wab is used as the approximate backpropagation weights
     
     Input:
         activity: n_batch x n_unit, firing rate of neurons
