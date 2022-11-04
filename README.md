@@ -9,7 +9,7 @@ The overall ModProp framework proposed is "communicating the credit information 
 2. Approximates the activation derivative (for the nonlocal gradient terms only) so that the credit signal can be processed via pre-determined temporal filter taps.
 
 This code demonstrates a proof of concept for cell-type-specific neuromodulation for communicating credit signal (inspired from neuropeptide signaling molecules). Because it is just a proof of concept, it has several shortcomings to be improved in the future:
-    - The current ModProp formulation depends heavily on fine-tuning the hyperparameter µ; without properly tuning µ, training can go numerically unstable. Future work involves modifying ModProp with an adaptive mu for better stability and accuracy. 
+    - The current ModProp formulation depends heavily on fine-tuning the hyperparameter µ; without properly tuning µ, training can go numerically unstable. Future work involves modifying ModProp with an adaptive µ for better stability and accuracy. 
     - The current ModProp formulation does not work well when activity is not stationary; future work involves extending ModProp to nonstationary data. 
     - Future work also involves testing ModProp across a broad range of tasks and architectures (e.g. sparse connections, neuronal threshold adaptation, spiking neurons), with the hope of improving ModProp during that process. 
 
