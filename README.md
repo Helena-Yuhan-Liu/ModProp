@@ -8,16 +8,17 @@ The overall ModProp framework proposed is "communicating the credit information 
 
 2. Approximates the activation derivative (for the nonlocal gradient terms only) so that the credit signal can be processed via pre-determined temporal filter taps.
 
+A few remarks regarding the implementation: 
+* Please be advised that performance for the same rule can fluctuate across different runs (with different random weight initializations). It is possible for ModProp to perform similarly as MDGL/e-prop on some runs. However, the focus is on the trend across many runs, so one should repeat each rule with at least several runs. 
+* It is important not to include the activation derivative approximation in the eligibility trace term, i.e. the approximation only applies right before they pass through the recurrent weights. 
+* For using cell-type-specific weight matrices, this code uses automatic differentiation in TensorFlow (to avoid numerical instabilities) by replacing recurrent weights with Wab right before the gradient is computed, and then setting the recurrent weights to their original value before applying the Adam optimizer. However, such in-place gradient modification is not supported in PyTorch. Alternatively, one can define a Linear layer with customized gradients, but that’s not recommended since it can be numerically unstable. 
+
+
 This code demonstrates a proof of concept for cell-type-specific neuromodulation for communicating credit signal (inspired from neuropeptide signaling molecules). Because it is just a proof of concept, it has several shortcomings to be improved in the future:
 
-1. The current ModProp formulation depends heavily on fine-tuning the hyperparameter µ; without properly tuning µ, training can go numerically unstable. Future work involves modifying ModProp with an adaptive µ for better stability and accuracy. 
-2. The current ModProp formulation does not work well when activity is not stationary; future work involves extending ModProp to nonstationary data. 
-3. Future work also involves testing ModProp across a broad range of tasks and architectures (e.g. sparse connections, neuronal threshold adaptation, spiking neurons), with the hope of improving ModProp during that process. 
-
-Additional remarks: 
-1. Please be advised that performance for the same rule can fluctuate across different runs (with different random weight initializations). It is possible for ModProp to perform similarly as MDGL/e-prop on some runs. However, the focus is on the trend across many runs, so one should repeat each rule with at least several runs. 
-2. It is important not to include the activation derivative approximation in the eligibility trace term, i.e. the approximation only applies right before they pass through the recurrent weights. 
-3. For using cell-type-specific weight matrices, this code uses automatic differentiation in TensorFlow (to avoid numerical instabilities) by replacing recurrent weights with Wab right before the gradient is computed, and then setting the recurrent weights to their original value before applying the Adam optimizer. However, such in-place gradient modification is not supported in PyTorch. Alternatively, one can define a customized Linear layer, but that’s not recommended since it can be numerically unstable. 
+* The current ModProp formulation depends heavily on fine-tuning the hyperparameter µ; without properly tuning µ, training can go numerically unstable. Future work involves modifying ModProp with an adaptive µ for better stability and accuracy. 
+* The current ModProp formulation does not work well when activity is not stationary; future work involves extending ModProp to nonstationary data. 
+* Future work also involves testing ModProp across a broad range of tasks and architectures (e.g. sparse connections, neuronal threshold adaptation, spiking neurons), with the hope of improving ModProp during that process. 
 
 ## Usage
 
