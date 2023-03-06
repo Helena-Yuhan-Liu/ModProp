@@ -17,7 +17,7 @@ This code demonstrates a proof of concept for cell-type-specific neuromodulation
 Additional remarks: 
 1. Please be advised that performance for the same rule can fluctuate across different runs (with different random weight initializations). It is possible for ModProp to perform similarly as MDGL/e-prop on some runs. However, the focus is on the trend across many runs, so one should repeat each rule with at least several runs. 
 2. It is important not to include the activation derivative approximation in the eligibility trace term, i.e. the approximation only applies right before they pass through the recurrent weights. 
-3. For using cell-type-specific weight matrices, this code uses automatic differentiation in TensorFlow (to avoid numerical instabilities) by replacing recurrent weights with Wab right before the gradient is computed, and then setting the recurrent weights to their original value before applying the Adam optimizer. However, such in-place gradient modification is not supported in PyTorch. 
+3. For using cell-type-specific weight matrices, this code uses automatic differentiation in TensorFlow (to avoid numerical instabilities) by replacing recurrent weights with Wab right before the gradient is computed, and then setting the recurrent weights to their original value before applying the Adam optimizer. However, such in-place gradient modification is not supported in PyTorch. Alternatively, one can define a customized Linear layer, but that’s not recommended since it can be numerically unstable. 
 
 ## Usage
 
